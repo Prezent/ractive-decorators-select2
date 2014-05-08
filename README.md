@@ -1,9 +1,11 @@
 Ractive.js select2 decorator plugin
 ======================================================
 
+Integrate Select2 with Ractive, including two-way binding.
+
 *Find more Ractive.js plugins at [ractivejs.org/plugins](http://ractivejs.org/plugins)*
 
-[See the demo here.](TODO)
+[See the demo here.](http://prezent.github.io/ractive-decorators-select2/)
 
 Usage
 -----
@@ -22,13 +24,36 @@ Or, if you're using a module loader, require this module:
 require( 'ractive-decorators-select2' );
 ```
 
-**plugin-specific instructions to go here...**
+Add the decorator to your select elements:
 
+```html
+<select decorator='select2' value='{{selected}}'>
+    {{#options}}
+        <option value='{{.}}'>{{.}}</option>
+    {{/options}}
+</select>
+```
 
+Add option objects to the `type` property to set select2 constructor options:
+
+```js
+Ractive.decorators.select2.type.demo = {
+    width: '25%',
+    // ... other select2 options
+};
+```
+
+```html
+<select decorator='select2:demo' value='{{selected}}'>
+    {{#options}}
+        <option value='{{.}}'>{{.}}</option>
+    {{/options}}
+</select>
+```
 
 License
 -------
 
-Copyright (c) 2014 Sander Marechal. Licensed MIT
+Copyright (c) 2014 [Prezent Internet B.V.](http://www.prezent.nl). Licensed MIT
 
 Created with the [Ractive.js plugin template](https://github.com/ractivejs/plugin-template) for Grunt.
