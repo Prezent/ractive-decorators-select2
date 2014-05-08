@@ -1,0 +1,17 @@
+{
+	"name": "ractive-decorators-select2",
+	"version": "0.1.0",
+	"author": "Sander Marechal",
+	"main": "ractive-decorators-select2.js",
+	"dependencies": {
+		"ractivejs/ractive": "~0.4.0",
+        "jquery": ">=1.7.1",
+        "select2": ">=3.0"
+	},
+	"ignore": [
+		"**/.*",
+		"src",
+		"test",
+		"Gruntfile.js"
+	]
+}
