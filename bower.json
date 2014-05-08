@@ -1,13 +1,8 @@
 {
 	"name": "ractive-decorators-select2",
-	"version": "0.1.0",
+	"version": "0.1.2",
 	"author": "Prezent Internet B.V.",
 	"main": "ractive-decorators-select2.js",
-	"dependencies": {
-		"ractive": "~0.4.0",
-        "jquery": ">=1.7.1",
-        "select2": ">=3.0"
-	},
 	"ignore": [
 		"**/.*",
 		"src",

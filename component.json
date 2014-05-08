@@ -2,11 +2,8 @@
 	"name": "ractive-decorators-select2",
 	"repo": "git://github.com/prezent/ractive-decorators-select2.git",
 	"description": "ractive-decorators-select2",
-	"version": "0.1.0",
+	"version": "0.1.2",
 	"keywords": [],
-	"dependencies": {
-		"ractivejs/ractive": "~0.4.0",
-	},
 	"development": {},
 	"license": "MIT",
 	"main": "ractive-decorators-select2.js",
