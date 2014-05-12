@@ -58,6 +58,7 @@
     select2Decorator = function (node, type) {
 
         var ractive = node._ractive.root;
+        var setting = false;
 
         var options = {};
         if (type) {
@@ -70,14 +71,22 @@
 
         // Push changes from ractive to select2
         var observer = ractive.observe(node._ractive.binding.keypath, function () {
-            window.setTimeout(function () {
-                $(node).change();
-            }, 0);
+            if (!setting) {
+                setting = true;
+                window.setTimeout(function () {
+                    $(node).change();
+                    setting = false;
+                }, 0);
+            }
         });
 
         // Pull changes from select2 to ractive
         $(node).select2(options).on('change', function () {
-            ractive.updateModel();
+            if (!setting) {
+                setting = true;
+                ractive.updateModel();
+                setting = false;
+            }
         });
 
         return {
