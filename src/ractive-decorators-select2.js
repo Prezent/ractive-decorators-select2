@@ -59,6 +59,7 @@
 
         var ractive = node._ractive.root;
         var setting = false;
+        var observer;
 
         var options = {};
         if (type) {
@@ -73,15 +74,17 @@
         }
 
         // Push changes from ractive to select2
-        var observer = ractive.observe(node._ractive.binding.keypath, function () {
-            if (!setting) {
-                setting = true;
-                window.setTimeout(function () {
-                    $(node).change();
-                    setting = false;
-                }, 0);
-            }
-        });
+        if (node._ractive.binding) {
+            observer = ractive.observe(node._ractive.binding.keypath, function () {
+                if (!setting) {
+                    setting = true;
+                    window.setTimeout(function () {
+                        $(node).change();
+                        setting = false;
+                    }, 0);
+                }
+            });
+        }
 
         // Pull changes from select2 to ractive
         $(node).select2(options).on('change', function () {
@@ -95,7 +98,10 @@
         return {
             teardown: function () {
                 $(node).select2('destroy');
-                observer.cancel();
+
+                if (observer) {
+                    observer.cancel();
+                }
             }
         };
     };
