@@ -57,8 +57,10 @@
 	<!-- Demo code -->
 	<script id='demo-code'>
         // define select2 options
-        Ractive.decorators.select2.type.demo = {
-            width: '25%'
+        Ractive.decorators.select2.type.demo = function (node) {
+            return {
+                width: '25%'
+            }
         };
 
         ractive = new Ractive({

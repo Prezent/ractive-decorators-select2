@@ -67,6 +67,9 @@
             }
 
             options = select2Decorator.type[type];
+            if (typeof options === 'function') {
+                options = options.call(this, node);
+            }
         }
 
         // Push changes from ractive to select2

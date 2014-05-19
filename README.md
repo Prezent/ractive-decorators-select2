@@ -51,6 +51,17 @@ Ractive.decorators.select2.type.demo = {
 </select>
 ```
 
+You can also use a function that returns an options object. The function is passed the DOM node the select2 applies to:
+
+```js
+Ractive.decorators.select2.type.demo = function (node) {
+    return {
+        width: '25%',
+        // ... other select2 options
+    }
+};
+```
+
 License
 -------
 
