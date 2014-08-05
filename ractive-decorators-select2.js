@@ -75,10 +75,13 @@
 
         // Push changes from ractive to select2
         if (node._ractive.binding) {
-            observer = ractive.observe(node._ractive.binding.keypath, function () {
+            observer = ractive.observe(node._ractive.binding.keypath, function (newvalue) {
                 if (!setting) {
                     setting = true;
                     window.setTimeout(function () {
+                        if (newvalue === "")
+                            $(node).select2("val", "");
+                        
                         $(node).change();
                         setting = false;
                     }, 0);
