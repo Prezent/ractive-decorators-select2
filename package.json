@@ -1,11 +1,11 @@
 {
-	"name": "ractive-decorators-ractive-decorators-select2",
+	"name": "ractive-decorators-select2",
 	"version": "0.1.4",
 	"author": {
 		"name": "Sander Marechal"
 	},
-	"main": "ractive-decorators-ractive-decorators-select2.js",
-	"description": "ractive-decorators-ractive-decorators-select2 plugin for Ractive.js",
+	"main": "ractive-decorators-select2.js",
+	"description": "ractive-decorators-select2 plugin for Ractive.js",
 	"dependencies": {
 		"ractive": ">= 0.4.0",
         "jquery": ">=1.7.1",
