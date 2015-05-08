@@ -32,26 +32,30 @@
 
 	// Common JS (i.e. browserify) environment
 	if ( typeof module !== 'undefined' && module.exports && typeof require === 'function' ) {
-		factory( require( 'ractive' ), require( 'jquery' ) );
+		factory( require( 'ractive' ), require( 'jquery' ), require( 'select2' ) );
 	}
 
 	// AMD?
 	else if ( typeof define === 'function' && define.amd ) {
-		define([ 'ractive', 'jquery' ], factory );
+		define([ 'ractive', 'jquery', 'select2' ], factory );
 	}
 
 	// browser global
 	else if ( global.Ractive && global.jQuery) {
-		factory( global.Ractive, global.jQuery );
+		factory( global.Ractive, global.jQuery, global.jQuery.fn.select2 );
 	}
 
 	else {
-		throw new Error( 'Could not find Ractive or jQuery! They must be loaded before the ractive-decorators-select2 plugin' );
+		throw new Error( 'Could not find Ractive, jQuery or Select2! They must be loaded before the ractive-decorators-select2 plugin' );
 	}
 
-}( typeof window !== 'undefined' ? window : this, function ( Ractive, $ ) {
+}( typeof window !== 'undefined' ? window : this, function ( Ractive, $, Select2 ) {
 
 	'use strict';
+
+    if (typeof $.fn.select2 === 'undefined') {
+        $.fn.select2 = Select2;
+    }
 
     var select2Decorator;
 
