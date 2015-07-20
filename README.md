@@ -3,7 +3,7 @@ Ractive.js select2 decorator plugin
 
 Integrate Select2 with Ractive, including two-way binding.
 
-*Find more Ractive.js plugins at [ractivejs.org/plugins](http://ractivejs.org/plugins)*
+*Find more Ractive.js plugins at [ractivejs.org/plugins](http://docs.ractivejs.org/latest/plugins)*
 
 [See the demo here.](http://prezent.github.io/ractive-decorators-select2/)
 
