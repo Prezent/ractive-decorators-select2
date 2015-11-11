@@ -26,91 +26,98 @@
 
 */
 
-(function ( global, factory ) {
+(function(global, factory) {
 
-	'use strict';
+  'use strict';
 
-	// Common JS (i.e. browserify) environment
-	if ( typeof module !== 'undefined' && module.exports && typeof require === 'function' ) {
-		factory( require( 'ractive' ), require( 'jquery' ) );
-	}
+  // Common JS (i.e. browserify) environment
+  if (typeof module !== 'undefined' && module.exports && typeof require === 'function') {
+    factory(require('ractive'), require('jquery'), require('select2'));
+  }
 
-	// AMD?
-	else if ( typeof define === 'function' && define.amd ) {
-		define([ 'ractive', 'jquery' ], factory );
-	}
+  // AMD?
+  else if (typeof define === 'function' && define.amd) {
+    define(['ractive', 'jquery', 'select2'], factory);
+  }
 
-	// browser global
-	else if ( global.Ractive && global.jQuery) {
-		factory( global.Ractive, global.jQuery );
-	}
+  // browser global
+  else if (global.Ractive && global.jQuery) {
+    factory(global.Ractive, global.jQuery, global.jQuery.fn.select2);
+  } else {
+    throw new Error('Could not find Ractive, jQuery or Select2! They must be loaded before the ractive-decorators-select2 plugin');
+  }
 
-	else {
-		throw new Error( 'Could not find Ractive or jQuery! They must be loaded before the ractive-decorators-select2 plugin' );
-	}
+}(typeof window !== 'undefined' ? window : this, function(Ractive, $, Select2) {
 
-}( typeof window !== 'undefined' ? window : this, function ( Ractive, $ ) {
+  'use strict';
 
-	'use strict';
+  if (typeof $.fn.select2 === 'undefined') {
+    $.fn.select2 = Select2;
+  }
 
-    var select2Decorator;
+  var select2Decorator;
 
-    select2Decorator = function (node, type) {
+  select2Decorator = function(node, type) {
 
-        var ractive = node._ractive.root;
-        var setting = false;
-        var observer;
+    var ractive = node._ractive.root;
+    var setting = false;
+    var observer;
 
-        var options = {};
-        if (type) {
-            if (!select2Decorator.type.hasOwnProperty(type)) {
-                throw new Error( 'Ractive Select2 type "' + type + '" is not defined!' );
+    var options = {};
+    if (type) {
+      if (!select2Decorator.type.hasOwnProperty(type)) {
+        throw new Error('Ractive Select2 type "' + type + '" is not defined!');
+      }
+
+      options = select2Decorator.type[type];
+      if (typeof options === 'function') {
+        options = options.call(this, node);
+      }
+    }
+
+    //Push changes from ractive to select2
+    if (node._ractive.binding) {
+      observer = ractive.observe(node._ractive.binding.keypath.str, function(newvalue) {
+        if (!setting) {
+          setting = true;
+          window.setTimeout(function() {
+            if (newvalue === "") {
+              $(node).select2("val", "");
+            } else if (Array.isArray(newvalue)) {
+              for (var i = 0; i < newvalue.length; i++) {
+                $(node).append('<option value="' + newvalue[i] + '">' + newvalue[i] + '</option>');
+              }
+              $(node).val(newvalue).trigger('change');
             }
-
-            options = select2Decorator.type[type];
-            if (typeof options === 'function') {
-                options = options.call(this, node);
-            }
+            $(node).change();
+            setting = false;
+          }, 0);
         }
+      });
+    }
 
-        // Push changes from ractive to select2
-        if (node._ractive.binding) {
-            observer = ractive.observe(node._ractive.binding.keypath.str, function (newvalue) {
-                if (!setting) {
-                    setting = true;
-                    window.setTimeout(function () {
-                        if (newvalue === "")
-                            $(node).select2("val", "");
-                        
-                        $(node).change();
-                        setting = false;
-                    }, 0);
-                }
-            });
+    // Pull changes from select2 to ractive
+    $(node).select2(options).on('change', function() {
+      if (!setting) {
+        setting = true;
+        ractive.updateModel();
+        setting = false;
+      }
+    });
+
+    return {
+      teardown: function() {
+        $(node).select2('destroy');
+
+        if (observer) {
+          observer.cancel();
         }
-
-        // Pull changes from select2 to ractive
-        $(node).select2(options).on('change', function () {
-            if (!setting) {
-                setting = true;
-                ractive.updateModel();
-                setting = false;
-            }
-        });
-
-        return {
-            teardown: function () {
-                $(node).select2('destroy');
-
-                if (observer) {
-                    observer.cancel();
-                }
-            }
-        };
+      }
     };
+  };
 
-    select2Decorator.type = {};
+  select2Decorator.type = {};
 
-    Ractive.decorators.select2 = select2Decorator;
+  Ractive.decorators.select2 = select2Decorator;
 
 }));
