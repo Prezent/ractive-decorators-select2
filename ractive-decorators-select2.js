@@ -61,7 +61,7 @@
 
     select2Decorator = function (node, type) {
 
-        var ractive = node._ractive.root || node._ractive.ractive;
+        var ractive = node._ractive.root;
         var setting = false;
         var observer;
 
@@ -80,7 +80,8 @@
         // Push changes from ractive to select2
         if (node._ractive.binding) {
             var binding = node._ractive.binding;
-            var keypath = binding.keypath ? binding.keypath.str : binding.model.key;
+            var keypath = binding.keypath ? binding.keypath.str : binding.model.getKeyPath();
+
             observer = ractive.observe(keypath, function (newvalue) {
                 if (!setting) {
                     setting = true;
